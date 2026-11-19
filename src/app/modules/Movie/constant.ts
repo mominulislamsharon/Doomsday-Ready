@@ -1,0 +1,4 @@
+export const MOVIE_CONSTANTS = {
+  MIN_RUNTIME: 1,
+  MAX_RUNTIME: 300,
+};
