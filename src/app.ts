@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import router from "./app/routes";
+import notFound from "./app/middlwares/notFound";
+import globalErrorHandler from "./app/middlwares/globalErrorHandler";
 
 const app = express();
 
@@ -12,5 +15,14 @@ app.get("/", (req, res) => {
     message: "Doomsday Ready API is running!",
   });
 });
+
+//Application routes
+app.use("/api/v1", router);
+
+// not found middleware
+app.use(notFound);
+
+// global error handler
+app.use(globalErrorHandler);
 
 export default app;
