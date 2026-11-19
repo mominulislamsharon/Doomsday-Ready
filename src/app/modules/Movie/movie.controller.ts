@@ -9,6 +9,15 @@ const createMovie = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, 201, "Movie created successfully", result);
 });
 
+const getAllMovies = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await MovieServices.getAllMoviesFromDB();
+
+    sendResponse(res, 200, "Movies retrieved successfully", result);
+  }
+);
+
 export const MovieController = {
-  createMovie
+  createMovie,
+  getAllMovies,
 };
