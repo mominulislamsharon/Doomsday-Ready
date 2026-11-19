@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 
 //Application routes
-app.use("/api/v1", router);
+app.use("/api", router);
 
 // not found middleware
 app.use(notFound);

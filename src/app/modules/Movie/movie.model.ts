@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
-import { IMovie } from "./interface";
+import { IMovie } from "./movie.interface";
+import { MOVIE_CONSTANTS } from "./movie.constant";
 
 const movieSchema = new Schema<IMovie>(
   {
@@ -18,6 +19,12 @@ const movieSchema = new Schema<IMovie>(
         message: "Release year must be an integer",
       },
     },
+    runtime: {
+      type: Number,
+      required: true,
+      min: MOVIE_CONSTANTS.MIN_RUNTIME,
+      max: MOVIE_CONSTANTS.MAX_RUNTIME,
+    },
     prerequisites: [
       {
         type: Schema.Types.ObjectId,
@@ -34,4 +41,4 @@ const movieSchema = new Schema<IMovie>(
   },
 );
 
-export const  Movie = model<IMovie>("Movie", movieSchema);
+export const Movie = model<IMovie>("Movie", movieSchema);

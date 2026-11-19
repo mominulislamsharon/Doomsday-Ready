@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MOVIE_CONSTANTS } from "./constant";
+import { MOVIE_CONSTANTS } from "./movie.constant";
 
 const createMovieValidationSchema = z.object({
   body: z.object({

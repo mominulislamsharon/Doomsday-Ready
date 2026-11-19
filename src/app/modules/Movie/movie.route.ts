@@ -1,0 +1,14 @@
+import express from "express";
+import validateRequest from "../../middlwares/validateRequest";
+import { MovieValidation } from "./movie.validation";
+import { MovieController } from "./movie.controller";
+
+const router = express.Router();
+
+router.post(
+  "/",
+  validateRequest(MovieValidation.createMovieValidationSchema),
+  MovieController.createMovie,
+);
+
+export default router;
