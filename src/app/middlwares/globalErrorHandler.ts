@@ -14,6 +14,14 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     statusCode = 400;
     message = "Validation failed";
     errorDetails = error.issues;
+  } else if (error.code === 11000) {
+    statusCode = 409;
+
+    const field = Object.keys(error.keyValue || {})[0];
+
+    message = field
+      ? `${field} already exists`
+      : "Duplicate value already exists";
   } else if (error instanceof Error) {
     message = error.message;
   }

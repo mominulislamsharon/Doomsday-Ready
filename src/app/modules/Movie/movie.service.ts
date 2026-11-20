@@ -4,8 +4,21 @@ import { Movie } from "./movie.model";
 import { Types } from "mongoose";
 
 const createMovieIntoDB = async (payload: IMovie) => {
-  const result = await Movie.create(payload);
-  return result;
+  const prerequisites = payload.prerequisites || [];
+
+  if (prerequisites.some((id) => !Types.ObjectId.isValid(id.toString()))) {
+    throw new AppError(400, "Invalid prerequisite movie ID");
+  }
+
+  const movies = await Movie.find({
+    _id: { $in: prerequisites },
+  });
+
+  if (movies.length !== prerequisites.length) {
+    throw new AppError(404, "Prerequisite movie not found");
+  }
+
+  return Movie.create(payload);
 };
 
 const getAllMoviesFromDB = async () => {
