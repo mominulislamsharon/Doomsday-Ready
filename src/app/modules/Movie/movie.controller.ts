@@ -9,15 +9,23 @@ const createMovie = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, 201, "Movie created successfully", result);
 });
 
-const getAllMovies = catchAsync(
-  async (req: Request, res: Response) => {
-    const result = await MovieServices.getAllMoviesFromDB();
+const getAllMovies = catchAsync(async (req: Request, res: Response) => {
+  const result = await MovieServices.getAllMoviesFromDB();
 
-    sendResponse(res, 200, "Movies retrieved successfully", result);
-  }
-);
+  sendResponse(res, 200, "Movies retrieved successfully", result);
+});
+
+const updateMovie = catchAsync(async (req: Request, res: Response) => {
+  const result = await MovieServices.updateMovieIntoDB(
+    req.params.id as string,
+    req.body,
+  );
+
+  sendResponse(res, 200, "Movie updated successfully", result);
+});
 
 export const MovieController = {
   createMovie,
   getAllMovies,
+  updateMovie,
 };

@@ -13,4 +13,10 @@ router.post(
 
 router.get("/", MovieController.getAllMovies);
 
+router.patch(
+  "/:id",
+  validateRequest(MovieValidation.updateMovieValidationSchema),
+  MovieController.updateMovie,
+);
+
 export default router;
