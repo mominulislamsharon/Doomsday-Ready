@@ -24,8 +24,16 @@ const updateMovie = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, 200, "Movie updated successfully", result);
 });
 
+const getRewatchOrder = catchAsync(async (req: Request, res: Response) => {
+  const result = await MovieServices.getRewatchOrderFromDB(
+    req.params.id as string,
+  );
+  sendResponse(res, 200, "Rewatch order retrieved successfully", result);
+});
+
 export const MovieController = {
   createMovie,
   getAllMovies,
   updateMovie,
+  getRewatchOrder,
 };

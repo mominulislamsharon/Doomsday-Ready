@@ -19,4 +19,6 @@ router.patch(
   MovieController.updateMovie,
 );
 
+router.get("/:id/rewatch-order", MovieController.getRewatchOrder);
+
 export default router;

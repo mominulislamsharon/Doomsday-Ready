@@ -86,8 +86,67 @@ const updateMovieIntoDB = async (id: string, payload: Partial<IMovie>) => {
   return result;
 };
 
+const getRewatchOrderFromDB = async (id: string) => {
+  if (!Types.ObjectId.isValid(id)) {
+    throw new AppError(400, "Invalid movie ID");
+  }
+
+  const targetMovie = await Movie.findById(id).select("prerequisites");
+
+  if (!targetMovie) {
+    throw new AppError(404, "Movie not found");
+  }
+
+  const visited = new Set<string>();
+  const orderedMovies: (IMovie & { _id: Types.ObjectId })[] = [];
+
+  // DFS
+  const visitMovie = async (movieId: string): Promise<void> => {
+    if (visited.has(movieId)) {
+      return;
+    }
+
+    visited.add(movieId);
+
+    const movie = await Movie.findById(movieId);
+
+    if (!movie) {
+      throw new AppError(404, "Prerequisite movie not found");
+    }
+
+    for (const prerequisite of movie.prerequisites) {
+      await visitMovie(prerequisite.toString());
+    }
+
+    orderedMovies.push(movie);
+  };
+
+  // Start DFS from target movie prerequisites
+
+  for (const prerequisite of targetMovie.prerequisites) {
+    await visitMovie(prerequisite.toString());
+  }
+
+  // Calculate watched count
+  const watchedCount = orderedMovies.filter((movie) => movie.watched).length;
+
+  // Calculate remaining runtime
+  const remainingRuntime = orderedMovies.reduce(
+    (total, movie) => total + (movie.watched ? 0 : movie.runtime),
+    0,
+  );
+
+  return {
+    prerequisites: orderedMovies,
+    totalMovies: orderedMovies.length,
+    watchedCount,
+    remainingRuntime,
+  };
+};
+
 export const MovieServices = {
   createMovieIntoDB,
   getAllMoviesFromDB,
   updateMovieIntoDB,
+  getRewatchOrderFromDB,
 };
