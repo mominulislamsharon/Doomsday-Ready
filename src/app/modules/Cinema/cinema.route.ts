@@ -13,4 +13,6 @@ router.post(
 
 router.get("/", CinemaControllers.getAllCinemas);
 
+router.get("/:id/booking", CinemaControllers.getBookingQuote);
+
 export default router;
