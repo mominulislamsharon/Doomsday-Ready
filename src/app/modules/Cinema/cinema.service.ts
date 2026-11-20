@@ -79,7 +79,7 @@ const getBookingQuoteFromDB = async (id: string, groupSize: number) => {
   const bookingResult = calculateMinimumBundles(cinemas.bundleSizes, groupSize);
 
   return {
-    cinema: cinema.name,
+    cinema: cinemas.name,
     groupSize,
     ...bookingResult,
   };
@@ -88,6 +88,5 @@ const getBookingQuoteFromDB = async (id: string, groupSize: number) => {
 export const cinemaServices = {
   createCinemaIntoDB,
   getAllCinemasFromDB,
-  calculateMinimumBundles,
   getBookingQuoteFromDB,
 };
