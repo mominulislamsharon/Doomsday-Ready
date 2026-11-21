@@ -2,6 +2,9 @@
 
 A full-stack movie management and cinema booking application built with React, TypeScript, Node.js, Express, and MongoDB.
 
+**Live Demo (Frontend):** https://doomsday-ready-361l.vercel.app/
+
+
 ## 🤖 AI Usage Disclosure
 
 **AI assistance was used in the following parts of this project:**
@@ -76,6 +79,15 @@ All endpoints are served under the `/api` prefix.
 - CORS
 - dotenv
 
+
+## 📝 Assumptions
+
+- Movie titles and cinema names must be unique. Duplicate entries return `409`.
+- A movie cannot depend on itself directly or indirectly. Such requests return `409 CIRCULAR_DEPENDENCY`.
+- Release year must be a positive integer (minimum 1).
+- Cinema bundle sizes must be unique, between 1 and 10 sizes, with each size ranging from 1 to 500.
+
+
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
@@ -86,7 +98,7 @@ All endpoints are served under the `/api` prefix.
 ### 1. Clone the Repository
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/mominulislamsharon/Doomsday-Ready.git
 cd Doomsday-Ready
 ```
 
