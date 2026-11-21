@@ -1,14 +1,49 @@
 import { useState } from "react";
-import { Search, Film } from "lucide-react";
+import type { FormEvent } from "react";
+import { Search, Film, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import useMovies from "@/hooks/useMovie";
+import useMovies, { useCreateMovie } from "@/hooks/useMovie";
 import MovieCard from "./MovieCards";
 
 const Movies = () => {
   const { data: movies = [], isLoading, isError } = useMovies();
+  const createMovieMutation = useCreateMovie();
 
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [showForm, setShowForm] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    releaseYear: "",
+    runtime: "",
+    prerequisites: [] as string[],
+  });
+
+  const handleCreateMovie = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    createMovieMutation.mutate(
+      {
+        title: formData.title,
+        releaseYear: Number(formData.releaseYear),
+        runtime: Number(formData.runtime),
+        prerequisites: formData.prerequisites,
+      },
+      {
+        onSuccess: () => {
+          setFormData({
+            title: "",
+            releaseYear: "",
+            runtime: "",
+            prerequisites: [],
+          });
+
+          setShowForm(false);
+        },
+      },
+    );
+  };
 
   const filteredMovies = movies.filter((movie) => {
     const matchesSearch = movie.title
@@ -47,14 +82,128 @@ const Movies = () => {
             Explore Collection
           </p>
 
-          <h1 className="text-3xl font-bold md:text-5xl">
-            All <span className="text-amber-400">Movies</span>
-          </h1>
+          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+            <div>
+              <h1 className="text-3xl font-bold md:text-5xl">
+                All <span className="text-amber-400">Movies</span>
+              </h1>
 
-          <p className="mt-3 text-gray-400">
-            Explore your movie collection and manage your watchlist.
-          </p>
+              <p className="mt-3 text-gray-400">
+                Explore your movie collection and manage your watchlist.
+              </p>
+            </div>
+
+            <Button
+              onClick={() => setShowForm(!showForm)}
+              className="bg-amber-400 text-black hover:bg-amber-300"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              {showForm ? "Close Form" : "Add Movie"}
+            </Button>
+          </div>
         </div>
+
+        {showForm && (
+          <form
+            onSubmit={handleCreateMovie}
+            className="mb-8 space-y-5 rounded-2xl border border-white/10 bg-[#121A2D] p-6"
+          >
+            <div>
+              <h2 className="text-xl font-bold">Add New Movie</h2>
+              <p className="mt-1 text-sm text-gray-400">
+                Add a movie to your collection.
+              </p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <input
+                required
+                type="text"
+                placeholder="Movie Title"
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                className="rounded-xl border border-white/10 bg-[#0B1020] p-3 text-white outline-none focus:border-amber-400"
+              />
+
+              <input
+                required
+                type="number"
+                min="1888"
+                max="2100"
+                placeholder="Release Year"
+                value={formData.releaseYear}
+                onChange={(e) =>
+                  setFormData({ ...formData, releaseYear: e.target.value })
+                }
+                className="rounded-xl border border-white/10 bg-[#0B1020] p-3 text-white outline-none focus:border-amber-400"
+              />
+
+              <input
+                required
+                type="number"
+                min="1"
+                max="300"
+                placeholder="Runtime (minutes)"
+                value={formData.runtime}
+                onChange={(e) =>
+                  setFormData({ ...formData, runtime: e.target.value })
+                }
+                className="rounded-xl border border-white/10 bg-[#0B1020] p-3 text-white outline-none focus:border-amber-400"
+              />
+            </div>
+
+            <div>
+              <p className="mb-3 text-sm font-medium text-gray-300">
+                Prerequisites (Optional)
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {movies.map((movie) => (
+                  <label
+                    key={movie._id}
+                    className="flex cursor-pointer items-center gap-2 rounded-lg bg-[#0B1020] p-3 text-sm text-gray-300"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={formData.prerequisites.includes(movie._id)}
+                      onChange={(e) => {
+                        const updatedPrerequisites = e.target.checked
+                          ? [...formData.prerequisites, movie._id]
+                          : formData.prerequisites.filter(
+                              (id) => id !== movie._id,
+                            );
+
+                        setFormData({
+                          ...formData,
+                          prerequisites: updatedPrerequisites,
+                        });
+                      }}
+                      className="accent-amber-400"
+                    />
+                    {movie.title}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {createMovieMutation.isError && (
+              <p className="text-sm text-red-400">
+                {createMovieMutation.error.message ||
+                  "Failed to create movie. Please try again."}
+              </p>
+            )}
+
+            <Button
+              type="submit"
+              disabled={createMovieMutation.isPending}
+              className="bg-amber-400 text-black hover:bg-amber-300"
+            >
+              {createMovieMutation.isPending ? "Creating..." : "Create Movie"}
+            </Button>
+          </form>
+        )}
 
         <div className="mb-8 flex flex-col gap-4 md:flex-row">
           <div className="relative flex-1">
@@ -93,7 +242,7 @@ const Movies = () => {
         {filteredMovies.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredMovies.map((movie) => (
-              <MovieCard key={movie._id} movie={movie} />
+              <MovieCard key={movie._id} movie={movie} allMovies={movies} />
             ))}
           </div>
         ) : (
