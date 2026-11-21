@@ -1,5 +1,10 @@
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 import app from "./app";
 import connectDB from "./app/config/db";
+
+
 
 const PORT = process.env.PORT || 5000;
 
