@@ -41,6 +41,10 @@ export const useUpdateMovie = () => {
       queryClient.invalidateQueries({
         queryKey: ["movies"],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["rewatch"],
+      });
     },
   });
 };

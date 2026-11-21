@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Film, Clock, Loader2, CheckCircle2, Circle } from "lucide-react";
 
-import useMovies from "@/hooks/useMovie";
+import useMovies, { useUpdateMovie } from "@/hooks/useMovie";
 import useRewatch from "@/hooks/useRewatch";
 
 const RewatchPlan = () => {
@@ -15,10 +15,21 @@ const RewatchPlan = () => {
     isError,
   } = useRewatch(selectedMovie);
 
+  const { mutate: updateMovie, isPending: isUpdating } = useUpdateMovie();
+
   const progress =
     rewatchPlan && rewatchPlan.totalMovies > 0
       ? (rewatchPlan.watchedCount / rewatchPlan.totalMovies) * 100
       : 0;
+
+  const handleWatchedToggle = (movieId: string, watched: boolean) => {
+    updateMovie({
+      movieId,
+      movieData: {
+        watched: !watched,
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#0B1020] px-6 py-10 text-white">
@@ -191,11 +202,16 @@ const RewatchPlan = () => {
                         </p>
                       </div>
 
-                      <div
-                        className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-medium ${
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleWatchedToggle(movie._id, movie.watched)
+                        }
+                        disabled={isUpdating}
+                        className={`flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-xs font-medium transition disabled:cursor-not-allowed disabled:opacity-50 ${
                           movie.watched
-                            ? "bg-green-400/10 text-green-400"
-                            : "bg-amber-400/10 text-amber-400"
+                            ? "bg-green-400/10 text-green-400 hover:bg-green-400/20"
+                            : "bg-amber-400/10 text-amber-400 hover:bg-amber-400/20"
                         }`}
                       >
                         {movie.watched ? (
@@ -205,9 +221,9 @@ const RewatchPlan = () => {
                         )}
 
                         <span className="hidden sm:inline">
-                          {movie.watched ? "Watched" : "Not Watched"}
+                          {movie.watched ? "Watched" : "Mark Watched"}
                         </span>
-                      </div>
+                      </button>
                     </div>
                   ))}
                 </div>

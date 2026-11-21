@@ -1,3 +1,4 @@
+import Booking from "@/pages/Booking/Booking";
 import Home from "@/pages/Home/Home";
 
 import Movies from "@/pages/Movies/Movies";
@@ -16,5 +17,9 @@ export const router = createBrowserRouter([
   {
     path: "/rewatch-plan",
     element: <RewatchPlan />,
+  },
+  {
+    path: "/booking",
+    element: <Booking />,
   },
 ]);
