@@ -8,7 +8,6 @@ A full-stack movie management and cinema booking application built with React, T
 
 - **Backend – Rewatch Plan:** Took AI guidance to understand the prerequisite movie ordering logic.
 - **Backend – Booking:** Used AI assistance for the group size-based minimum bundle calculation.
-- **Frontend – UI Design:** Used AI assistance for UI design and visual guidance.
 
 ## ✨ Features
 
