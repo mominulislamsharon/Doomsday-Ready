@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Ticket, Users, CheckCircle2, XCircle, Plus, X } from "lucide-react";
+import { Users, CheckCircle2, XCircle, Plus, X } from "lucide-react";
 
 import useCinemas, { useCreateCinema } from "@/hooks/useCinema";
 import useBooking from "@/hooks/useBooking";
