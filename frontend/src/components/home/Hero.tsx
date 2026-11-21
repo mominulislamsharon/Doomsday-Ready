@@ -1,7 +1,9 @@
 import { Button } from "@base-ui/react";
 import { ArrowRight, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative flex min-h-[650px] items-center overflow-hidden bg-[#0B1020]">
       <div
@@ -36,7 +38,10 @@ const HeroSection = () => {
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-4">
-            <Button className="flex items-center gap-2 rounded-lg bg-amber-400 px-7 py-3.5 font-bold text-[#0B1020] transition hover:bg-amber-300">
+            <Button
+              onClick={() => navigate("/movies")}
+              className="flex items-center gap-2 rounded-lg bg-amber-400 px-7 py-3.5 font-bold text-[#0B1020] transition hover:bg-amber-300"
+            >
               <Play size={18} fill="currentColor" />
               Explore Movies
             </Button>

@@ -1,7 +1,8 @@
-import { Clock, Star, ArrowRight } from "lucide-react";
+import { Clock, Star, ArrowRight, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-// json data show iamge
+// Featured movie data
 const movies = [
   {
     id: 1,
@@ -38,39 +39,44 @@ const movies = [
 ];
 
 const MovieShowcase = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-[#0B1020] px-6 py-24 text-white">
+    <div className="bg-[#0B1020] px-6 py-20 text-white sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex items-end justify-between">
+        {/* Section Header */}
+        <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-amber-400">
               Discover Your Next Favorite
             </p>
-            <h1 className="text-3xl font-bold md:text-4xl">
-              Now <span className="text-amber-400">Showing</span>
-            </h1>
+
+            <h2 className="text-3xl font-bold md:text-4xl">
+              Featured <span className="text-amber-400">Movies</span>
+            </h2>
+
             <p className="mt-3 text-gray-400">
-              Explore the latest movies on the big screen.
+              Explore some popular movies and plan your next movie experience.
             </p>
           </div>
 
           <Button
-            className="hidden gap-2 border-white/20 text-white hover:bg-white/10 hover:text-white sm:flex"
+            onClick={() => navigate("/movies")}
+            className="hidden gap-2 border-white/20 text-white hover:bg-white/10 hover:text-amber-400 sm:flex"
             variant="outline"
           >
-            View All <ArrowRight size={16} />
+            View All Movies <ArrowRight size={16} />
           </Button>
         </div>
-
-        {/* card */}
 
         <div className="grid grid-cols-2 gap-5 md:grid-cols-4 md:gap-7">
           {movies.map((movie) => (
             <article key={movie.id} className="group">
-              <div className="relative overflow-hidden rounded-xl bg-white/5">
+              <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#121A2D]">
                 <img
                   src={movie.image}
                   alt={movie.title}
+                  loading="lazy"
                   className="aspect-[2/3] w-full object-cover transition duration-500 group-hover:scale-105"
                 />
 
@@ -79,19 +85,25 @@ const MovieShowcase = () => {
                   {movie.rating}
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
-                  <Button className="w-full bg-amber-400 font-bold text-[#0B1020] hover:bg-amber-300">
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100">
+                  <Button
+                    onClick={() => navigate("/booking")}
+                    className="w-full gap-2 bg-amber-400 text-sm font-bold text-[#0B1020] hover:bg-amber-300"
+                  >
+                    <Ticket size={16} />
                     Book Tickets
                   </Button>
                 </div>
               </div>
 
               <div className="pt-4">
-                <h3 className="truncate text-lg font-bold text-white">
+                <h3 className="truncate text-base font-bold text-white sm:text-lg">
                   {movie.title}
                 </h3>
 
-                <p className="mt-1 text-sm text-gray-400">{movie.genre}</p>
+                <p className="mt-1 text-xs text-gray-400 sm:text-sm">
+                  {movie.genre}
+                </p>
 
                 <div className="mt-3 flex items-center gap-2 text-xs text-gray-400">
                   <Clock size={14} />
@@ -100,6 +112,16 @@ const MovieShowcase = () => {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="mt-8 sm:hidden">
+          <Button
+            onClick={() => navigate("/movies")}
+            variant="outline"
+            className="w-full gap-2 border-white/20 text-white hover:bg-white/10"
+          >
+            View All Movies <ArrowRight size={16} />
+          </Button>
         </div>
       </div>
     </div>
