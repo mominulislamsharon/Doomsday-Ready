@@ -2,7 +2,7 @@
 
 A full-stack movie management and cinema booking application built with React, TypeScript, Node.js, Express, and MongoDB.
 
-**## 🤖 AI Usage Disclosure**
+## 🤖 AI Usage Disclosure
 
 **AI assistance was used in the following parts of this project:**
 
@@ -31,6 +31,20 @@ A full-stack movie management and cinema booking application built with React, T
 - Responsive design.
 - Modern dark-themed interface.
 - Simple and interactive navigation.
+
+
+  ### 🔗 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/movies` | Get all movies |
+| GET | `/cinemas` | Get all cinemas |
+
+**Base URL (Local):** `http://localhost:5000`
+
+**Full URLs:**
+- Movies: `http://localhost:5000/movies`
+- Cinemas: `http://localhost:5000/cinemas`
 
 ## 🛠️ Technology Stack
 
@@ -105,7 +119,7 @@ npm install
 Create a `.env` file in the frontend directory:
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000
 ```
 
 Start the frontend development server:
