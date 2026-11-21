@@ -33,18 +33,25 @@ A full-stack movie management and cinema booking application built with React, T
 - Simple and interactive navigation.
 
 
-  ### 🔗 API Endpoints
+  ## 🔗 API Endpoints
+
+All endpoints are served under the `/api` prefix.
+
+**Base URL (local):** `http://localhost:5000/api`
 
 | Method | Endpoint | Description |
-|---|---|---|
-| GET | `/movies` | Get all movies |
-| GET | `/cinemas` | Get all cinemas |
-
-**Base URL (Local):** `http://localhost:5000`
+|--------|----------|-------------|
+| POST | `/api/movies` | Create a movie |
+| GET | `/api/movies` | Get all movies |
+| PATCH | `/api/movies/:id` | Update a movie (watched, prerequisites) |
+| GET | `/api/movies/:id/rewatch-order` | Get the rewatch order for a movie |
+| POST | `/api/cinemas` | Create a cinema |
+| GET | `/api/cinemas` | Get all cinemas |
+| GET | `/api/cinemas/:id/booking?groupSize=6` | Get the minimum bundle booking quote |
 
 **Full URLs:**
-- Movies: `http://localhost:5000/movies`
-- Cinemas: `http://localhost:5000/cinemas`
+- Movies: `http://localhost:5000/api/movies`
+- Cinemas: `http://localhost:5000/api/cinemas`
 
 ## 🛠️ Technology Stack
 
